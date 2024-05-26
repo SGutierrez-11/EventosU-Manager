@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../styles/globals.css";
-
+import { ReactNode } from "react";
+import { montserrat } from "@/components/fonts";
 
 export const metadata: Metadata = {
   title: "EventosU",
-  description: "EventosU es una aplicación para gestionar eventos universitarios.",
+  description:
+    "EventosU es una aplicación para gestionar eventos universitarios.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen">{children}</body>
+    <html lang="es">
+      <body className={`${montserrat.className} antialiased min-h-screen`}>
+        {children}
+      </body>
     </html>
   );
 }
