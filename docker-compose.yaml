@@ -12,10 +12,10 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
-      - local_mongodata:/data/db
+      - ./commands/local_mongodata:/data/db
 
   mongo-express:
     image: mongo-express
@@ -23,9 +23,9 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:27017/
       ME_CONFIG_BASICAUTH: false
 
   postgres:
@@ -35,10 +35,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: user-name
-      POSTGRES_PASSWORD: strong-password
+      POSTGRES_DB: eventos
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_ROOT_PASSWORD: admin
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - ./commands/pg-data:/var/lib/postgresql/data
+      - ./commands/init.sql:/docker-entrypoint-initdb.d/init.sql
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
@@ -46,12 +49,12 @@ services:
     ports:
       - "8888:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - ./commands/pgadmin-data:/var/lib/pgadmin
 
 volumes:
   local_mongodata:
-  local_pgdata:
+  pg-data:
   pgadmin-data:

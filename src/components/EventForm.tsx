@@ -11,7 +11,7 @@ const EventForm: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(event); // Aquí deberías integrar la lógica para enviar los datos al backend
+        console.log(event); 
     };
 
     return (

@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import Image from "next/image";
-import { EventsArray } from "../types"; // Asegúrate de que la ruta sea correcta
+import { EventsArray } from "../types"; 
 
 const EventsCards: React.FC<EventsArray> = ({ events }) => {
   return (
