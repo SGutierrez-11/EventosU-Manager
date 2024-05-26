@@ -1,15 +1,16 @@
-import { ICommonUseCases } from "@/api/application/use-cases/common";
-import { DataSource, EntityMetadata, Repository } from "typeorm";
+import { ICommonUseCases } from "@/api/domain/use-cases/common";
+import { EntityMetadata, FindOptionsWhere, Repository } from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity.js";
 
-export class TypeORMGenericRepository<T, E extends EntityMetadata> implements ICommonUseCases<T> {
-    protected repository: Repository<E>;
+export class TypeORMGenericRepository<T extends EntityMetadata> implements ICommonUseCases<T> {
+    protected repository: Repository<T>;
 
-    constructor(repository: Repository<E>) {
+    constructor(repository: Repository<T>) {
         this.repository = repository;
     }
 
-    protected getWhereCondition(filter: Partial<T>): Partial<T> {
-        const whereCondition: Partial<T> = {};
+    protected getWhereCondition(filter: Partial<T>): FindOptionsWhere<T> {
+        const whereCondition: FindOptionsWhere<T> = {};
 
         Object.keys(filter).forEach(key => {
             const safeKey = key as keyof T;
@@ -29,7 +30,7 @@ export class TypeORMGenericRepository<T, E extends EntityMetadata> implements IC
 
     async update(filter: Partial<T>, entity: T) : Promise<T> {
         const whereCondition = this.getWhereCondition(filter);
-        await this.repository.update(whereCondition, entity);
+        await this.repository.update(whereCondition, entity as QueryDeepPartialEntity<T>);
         return entity;
     }
 
