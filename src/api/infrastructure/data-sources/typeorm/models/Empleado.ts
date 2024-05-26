@@ -1,8 +1,10 @@
 import Empleado from "@/api/domain/entities/Empleado";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import TypeORMTipoContratacion from "./TipoContratacion";
 import TypeORMTipoEmpleado from "./TipoEmpleado";
 import TypeORMFacultad from "./Facultad";
+import TypeORMSede from "./Sede";
+import TypeORMCiudad from "./Ciudad";
 
 @Entity()
 export default class TypeORMEmpleado implements Empleado {
@@ -28,9 +30,9 @@ export default class TypeORMEmpleado implements Empleado {
     @ManyToOne(() => TypeORMFacultad, facultad => facultad.codigo)
     cod_facultad!: number;
 
-
+    @ManyToOne(() => TypeORMSede, sede => sede.codigo)
     codigo_sede!: number;
 
-
+    @ManyToMany(() => TypeORMCiudad, ciudad => ciudad.codigo)
     lugar_nacimiento!: number;
 }

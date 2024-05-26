@@ -1,5 +1,6 @@
 import Facultad from "@/api/domain/entities/Facultad";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import TypeORMEmpleado from "./Empleado";
 
 @Entity()
 export default class TypeORMFacultad implements Facultad {
@@ -16,6 +17,6 @@ export default class TypeORMFacultad implements Facultad {
     @Column()
     nro_telefono!: string;
 
-
+    @OneToOne(() => TypeORMEmpleado, empleado => empleado.identificacion)
     id_decano!: string;
 }
