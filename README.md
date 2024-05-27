@@ -71,9 +71,15 @@ Para la base de datos relacional en PostgreSQL, se implementarán las siguientes
 
 Se establecerán relaciones entre estas tablas utilizando claves foráneas, garantizando la integridad referencial. Los datos se cargarán adecuadamente, asegurando que todas las relaciones y restricciones estén correctamente implementadas.
 
+![image](https://github.com/SGutierrez-11/eventos-u-manager/assets/64285906/a4689a41-e58c-41dc-b9e7-bd00fcffe028)
+
+
 ### MongoDB
 
 En MongoDB, se crearán las colecciones necesarias para almacenar eventos, lugares, participantes y comentarios. Se diseñarán índices adecuados para optimizar las consultas más comunes, como la búsqueda de eventos por categorías o la recuperación de comentarios asociados a un evento específico.
+
+![image](https://github.com/SGutierrez-11/eventos-u-manager/assets/64285906/60293b46-0eea-4a6f-be1c-ee4ea718b59a)
+
 
 ## Integración
 
