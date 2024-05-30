@@ -135,29 +135,29 @@ ALTER TABLE EVENTOS.PROGRAMAS ADD CONSTRAINT PROGRAMAS_AREAS_FK FOREIGN KEY ( co
 ALTER TABLE EVENTOS.SEDES ADD CONSTRAINT SEDES_CIUDADES_FK FOREIGN KEY ( cod_ciudad ) REFERENCES EVENTOS.CIUDADES ( codigo ) ;
 
 
-insert into eventos.PAISES (codigo,nombre) values (57, 'COLOMBIA'); 
-insert into eventos.DEPARTAMENTOS (codigo,nombre, cod_pais) values (76, 'VALLE DEL CAUCA', 57); 
-insert into eventos.DEPARTAMENTOS (codigo,nombre, cod_pais) values (19, 'CAUCA', 57); 
+insert into eventos.TYPE_ORM_PAIS (codigo,nombre) values (57, 'COLOMBIA'); 
+insert into eventos.TYPE_ORM_DEPARTAMENTO (codigo,nombre, "codPaisCodigo") values (76, 'VALLE DEL CAUCA', 57); 
+insert into eventos.TYPE_ORM_DEPARTAMENTO (codigo,nombre, "codPaisCodigo") values (19, 'CAUCA', 57); 
 
-insert into eventos.ciudades (codigo,nombre, cod_dpto) values (76001, 'CALI', 76); 
-insert into eventos.ciudades (codigo,nombre, cod_dpto) values (76364, 'JAMUNDI', 76); 
-insert into eventos.ciudades (codigo,nombre, cod_dpto) values (19001, 'POPAYAN', 76); 
+insert into eventos.TYPE_ORM_ciudad (codigo,nombre, "codDptoCodigo") values (76001, 'CALI', 76); 
+insert into eventos.TYPE_ORM_ciudad (codigo,nombre, "codDptoCodigo") values (76364, 'JAMUNDI', 76); 
+insert into eventos.TYPE_ORM_ciudad (codigo,nombre, "codDptoCodigo") values (19001, 'POPAYAN', 76); 
 
 
-insert into eventos.facultades (codigo,nombre,ubicacion,nro_telefono) values (1,'INGENIERIA', 'P38-203','3197906');
+insert into eventos.TYPE_ORM_facultad (codigo,nombre,ubicacion,nro_telefono) values (1,'INGENIERIA', 'P38-203','3197906');
 
-insert into eventos.sedes (codigo,nombre,cod_ciudad) values (1, 'PANCE', 76001);
+insert into eventos.TYPE_ORM_sede (codigo,nombre,"codCiudadCodigo") values (1, 'PANCE', 76001);
 
-insert into eventos.tipos_contratacion (nombre) values ('PRESTACION DE SERVICIOS');
-insert into eventos.tipos_contratacion (nombre) values ('CONTRATO A TERMINO INDEFINIDO');
-insert into eventos.tipos_contratacion (nombre) values ('CONTRATO A TERMINO DEFINIDO');
+insert into eventos.TYPE_ORM_tipo_contratacion (nombre) values ('PRESTACION DE SERVICIOS');
+insert into eventos.TYPE_ORM_tipo_contratacion (nombre) values ('CONTRATO A TERMINO INDEFINIDO');
+insert into eventos.TYPE_ORM_tipo_contratacion (nombre) values ('CONTRATO A TERMINO DEFINIDO');
 
-insert into eventos.tipos_empleado (nombre) values ('ADMINISTRATIVO');
-insert into eventos.tipos_empleado (nombre) values ('DOCENTE');
+insert into eventos.TYPE_ORM_tipo_empleado (nombre) values ('ADMINISTRATIVO');
+insert into eventos.TYPE_ORM_tipo_empleado (nombre) values ('DOCENTE');
 
-insert into eventos.empleados (identificacion,nombres,apellidos,email,tipo_contratacion,tipo_empleado,cod_facultad,codigo_sede,lugar_nacimiento) values (10,'ROCIO','LOPEZ','RLOPEZ@U.EDU.CO','CONTRATO A TERMINO INDEFINIDO','ADMINISTRATIVO', 1,1,76364);
-insert into eventos.empleados (identificacion,nombres,apellidos,email,tipo_contratacion,tipo_empleado,cod_facultad,codigo_sede,lugar_nacimiento) values (11,'JOSE','JURADO','JJURADO@U.EDU.CO','CONTRATO A TERMINO INDEFINIDO','DOCENTE', 1,1,19001);
+insert into eventos.TYPE_ORM_empleado (identificacion,nombres,apellidos,email,"tipoContratacionNombre","tipoEmpleadoNombre","codFacultadCodigo","codigoSedeCodigo") values (10,'ROCIO','LOPEZ','RLOPEZ@U.EDU.CO','CONTRATO A TERMINO INDEFINIDO','ADMINISTRATIVO',1,1);
+insert into eventos.TYPE_ORM_empleado (identificacion,nombres,apellidos,email,"tipoContratacionNombre","tipoEmpleadoNombre","codFacultadCodigo","codigoSedeCodigo") values (11,'JOSE','JURADO','JJURADO@U.EDU.CO','CONTRATO A TERMINO INDEFINIDO','DOCENTE',1,1);
 
-insert into eventos.areas (codigo,nombre,codigo_facultad, id_coordinador) values (1, 'CSI', 1, 10); 
+insert into eventos.TYPE_ORM_area (codigo,nombre,"facultadesCodigoCodigo") values (1, 'CSI', 1); 
 
-insert into eventos.PROGRAMAS (codigo,nombre,codigo_area) values (15,'INGENIERIA DE SISTEMAS', 1);
+insert into eventos.TYPE_ORM_PROGRAMA (codigo,nombre,areas_codigo) values (15,'INGENIERIA DE SISTEMAS', 1);

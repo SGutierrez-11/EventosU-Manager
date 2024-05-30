@@ -4,12 +4,13 @@ import { Event } from "@/api/domain/entities/Event";
 import { User } from "@/api/domain/entities/User";
 import TypeORMComment from "./Comment";
 import TypeORMLocation from "./Location";
+import { ObjectId } from "mongodb";
 
 
 @Entity()
-export default class TypeORMEvent implements Event {
+export default class TypeORMEvent {
     @ObjectIdColumn()
-    id!: string;
+    id!: ObjectId;
 
     @Column()
     title!: string;

@@ -1,18 +1,18 @@
 import { Event } from "@/api/domain/entities/Event";
 import { SingletonMongoDB } from "@/api/infrastructure/data-sources/typeorm";
 import TypeORMEvent from "@/api/infrastructure/data-sources/typeorm/models/mongo/Event";
-import exp from "constants";
 
 const mongoDB = SingletonMongoDB.getInstance();
 
 async function getEventRepository() {
     const connection = await mongoDB;
-    return connection.getDataSource().getRepository(TypeORMEvent);
+    return connection.getDataSource().getMongoRepository(TypeORMEvent);
 }
 
 export async function GET() {
     const eventRepository = await getEventRepository();
     const event = await eventRepository.find();
+    console.log(event);
     return Response.json({'Event': event});
 }
 

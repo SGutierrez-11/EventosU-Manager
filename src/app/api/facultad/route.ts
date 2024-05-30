@@ -12,6 +12,7 @@ async function getFacultadRepository() {
 export async function GET() {
     const facultadRepository = await getFacultadRepository()
     const facultades = await facultadRepository.find()
+    console.log(facultades)
     return Response.json({'Facultades': facultades})
 }
 

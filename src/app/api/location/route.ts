@@ -6,7 +6,7 @@ const mongoDB = SingletonMongoDB.getInstance();
 
 async function getLocationRepository() {
     const connection = await mongoDB;
-    return connection.getDataSource().getRepository(TypeORMLocation);
+    return connection.getDataSource().getMongoRepository(TypeORMLocation);
 }
 
 export async function GET() {

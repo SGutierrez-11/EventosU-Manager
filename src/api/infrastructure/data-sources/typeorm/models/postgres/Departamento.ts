@@ -2,7 +2,7 @@ import Departamento from "@/api/domain/entities/Departamento";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import TypeORMPais from "./Pais";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMDepartamento implements Departamento {
 
     @PrimaryGeneratedColumn("increment")

@@ -1,10 +1,14 @@
 import { Location } from "@/api/domain/entities/Location";
-import { Column } from "typeorm";
+import { Column, Entity, ObjectIdColumn } from "typeorm";
 import TypeORMCity from "./City";
+import { ObjectId } from "mongodb";
 
 
+@Entity()
+export default class TypeORMLocation {
+    @ObjectIdColumn()
+    id!: ObjectId;
 
-export default class TypeORMLocation implements Location {
     @Column()
     name!: string;
 

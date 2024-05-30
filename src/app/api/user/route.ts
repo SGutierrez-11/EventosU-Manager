@@ -6,12 +6,13 @@ const mongoDB = SingletonMongoDB.getInstance();
 
 async function getUserRepository() {
     const connection = await mongoDB;
-    return connection.getDataSource().getRepository(TypeORMUser);
+    return connection.getDataSource().getMongoRepository(TypeORMUser);
 }
 
 export async function GET() {
     const userRepository = await getUserRepository();
     const user = await userRepository.find();
+    console.log(user);
     return Response.json({'User': user});
 }
 
