@@ -60,6 +60,7 @@ const EventForm: React.FC = () => {
   
 
   const handleCheckboxChange = (name: string, values: string[] | User[]) => {
+    console.log('Checkbox Select:', name, values);
     setEvent(prev => ({ ...prev, [name]: values }));
     const valueIds = values.map(user => (typeof user === 'string' ? user : user.id));
     if (name === "attendees") {
