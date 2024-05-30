@@ -10,10 +10,10 @@ export interface User {
 }
 
 export enum UserRelation {
-  PROFESSOR = "profesor",
-  STUDENT = "estudiante",
-  GRADUATE = "graduado",
-  BUSINESSMAN = "empresario",
-  ADMINISTRATIVE = "administrativo",
-  EXECUTIVE = "directivo",
+  TEACHER = "DOCENTE",
+  STUDENT = "ESTUDIANTE",
+  GRADUATE = "GRADUADO",
+  BUSINESSMAN = "EMPRESARIO",
+  ADMINISTRATIVE = "ADMINISTRATIVO",
+  EXECUTIVE = "DIRECTIVO",
 }
