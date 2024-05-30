@@ -2,7 +2,7 @@ import { Column, Entity, ObjectIdColumn } from "typeorm";
 import TypeORMUser from "./User";
 import { Event } from "@/api/domain/entities/Event";
 import { User } from "@/api/domain/entities/User";
-import TypeORMComment from "./Commnet";
+import TypeORMComment from "./Comment";
 import TypeORMLocation from "./Location";
 
 

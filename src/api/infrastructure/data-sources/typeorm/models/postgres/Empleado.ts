@@ -9,7 +9,7 @@ import TypeORMCiudad from "./Ciudad";
 @Entity()
 export default class TypeORMEmpleado implements Empleado {
 
-    @PrimaryColumn("string")
+    @PrimaryColumn("varchar")
     identificacion!: string;
 
     @Column()
