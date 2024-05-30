@@ -30,11 +30,12 @@ const Home: React.FC = () => {
       setFilteredEvents(events);
       return;
     }
+    console.log(searchCategories);
     setFilteredEvents(
       events.filter(event =>
-        event.categories.some(category =>
-          searchCategories.includes(category.toLowerCase())
-        )
+        event.categories.some(category => {
+          return searchCategories.some(searchCategory => category.toLowerCase().includes(searchCategory));
+        })
       )
     );
   }, [searchTerm, events]);
