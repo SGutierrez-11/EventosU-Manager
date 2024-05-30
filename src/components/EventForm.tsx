@@ -28,31 +28,36 @@ const EventForm: React.FC = () => {
   const [programa, setPrograma] = useState<Programa[]>([]);
 
   useEffect(() => {
-    fetch(`${url}/location`).then((res) =>
-      res.json().then((data) => {
-        setLocations(data.Locations);
-        console.log("Locations: ", data);
-      })
-    );
-    fetch(`${url}/facultad`).then((res) =>
-      res.json().then((data) => {
-        setFacultades(data.Facultades);
-        console.log("Facultades: ", data);
-      })
-    );
-    fetch(`${url}/user`).then((res) =>
-      res.json().then((data) => {
-        setUsers(data.User);
-        console.log("Users: ", data);
-      })
-    );
-    fetch(`${url}/programa`).then((res) =>
-      res.json().then((data) => {
-        setPrograma(data.Programas);
-        console.log("Programa: ", data);
-      })
-    );
+    const fetchData = async () => {
+      try {
+        const resLocations = await fetch(`${url}/location`);
+        const dataLocations = await resLocations.json();
+        setLocations(dataLocations.Locations);
+        console.log("Locations: ", dataLocations);
+  
+        const resFacultades = await fetch(`${url}/facultad`);
+        const dataFacultades = await resFacultades.json();
+        setFacultades(dataFacultades.Facultades);
+        console.log("Facultades: ", dataFacultades);
+  
+        const resUsers = await fetch(`${url}/user`);
+        const dataUsers = await resUsers.json();
+        setUsers(dataUsers.User);
+        console.log("Users: ", dataUsers);
+  
+        const resPrograma = await fetch(`${url}/programa`);
+        const dataPrograma = await resPrograma.json();
+        setPrograma(dataPrograma.Programas);
+        console.log("Programa: ", dataPrograma);
+  
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
 
   const handleCheckboxChange = (name: string, values: string[] | User[]) => {
     setEvent(prev => ({ ...prev, [name]: values }));

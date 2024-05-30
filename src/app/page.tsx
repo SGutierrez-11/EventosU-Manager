@@ -36,12 +36,13 @@ const Home: React.FC = () => {
   }, [searchTerm, events]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/event").then((res) =>
-      res.json().then((data) => {
-        setEvents(data.Event);
-        setFilteredEvents(data.Event);
-      })
-    );
+    const fetchData = async () => {
+      const res = await fetch("http://localhost:3000/api/event");
+      const data = await res.json();
+      setEvents(data.Event);
+      setFilteredEvents(data.Event);
+    };
+    fetchData();
   }, []);
 
   return (
