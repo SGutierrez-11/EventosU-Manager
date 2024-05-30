@@ -6,7 +6,7 @@ const mongoDB = SingletonMongoDB.getInstance();
 
 async function getCommentRepository() {
     const connection = await mongoDB;
-    return connection.getDataSource().getRepository(TypeORMComment);
+    return connection.getDataSource().getMongoRepository(TypeORMComment);
 }
 
 export async function GET() {

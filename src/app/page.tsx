@@ -26,11 +26,16 @@ const Home: React.FC = () => {
   useEffect(() => {
     // Split the searchTerm into categories and filter events
     const searchCategories = searchTerm.split(",").map(s => s.trim().toLowerCase());
+    if (searchCategories?.[0] === '') {
+      setFilteredEvents(events);
+      return;
+    }
+    console.log(searchCategories);
     setFilteredEvents(
       events.filter(event =>
-        event.categories.some(category =>
-          searchCategories.includes(category.toLowerCase())
-        )
+        event.categories.some(category => {
+          return searchCategories.some(searchCategory => category.toLowerCase().includes(searchCategory));
+        })
       )
     );
   }, [searchTerm, events]);
@@ -40,7 +45,6 @@ const Home: React.FC = () => {
       const res = await fetch("http://localhost:3000/api/event");
       const data = await res.json();
       setEvents(data.Event);
-      setFilteredEvents(data.Event);
     };
     fetchData();
   }, []);
@@ -70,9 +74,7 @@ const Home: React.FC = () => {
               </ModalBody>
             </ModalContent>
           </Modal>
-          <Suspense fallback={<div>Loading...</div>}>
-            <EventsCards events={filteredEvents} />
-          </Suspense>
+          <EventsCards events={filteredEvents} />
         </CardBody>
       </Card>
     </div>

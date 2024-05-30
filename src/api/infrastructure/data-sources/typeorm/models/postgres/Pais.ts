@@ -1,7 +1,7 @@
 import Pais from "@/api/domain/entities/Pais";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMPais implements Pais {
 
     @PrimaryGeneratedColumn("increment")

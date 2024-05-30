@@ -6,7 +6,7 @@ import TypeORMFacultad from "./Facultad";
 import TypeORMSede from "./Sede";
 import TypeORMCiudad from "./Ciudad";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMEmpleado implements Empleado {
 
     @PrimaryColumn("varchar")

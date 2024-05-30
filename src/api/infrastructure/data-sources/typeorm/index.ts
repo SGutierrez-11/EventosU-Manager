@@ -25,7 +25,7 @@ export class TypeORMDataSource {
     async initialize() {
         try {
             await this.dataSource.initialize()
-            console.log("Base de datos inicializada")
+            console.log("Base de datos inicializada", this.dataSource.options.type)
         } catch (error) {
             console.error(error)
         }
@@ -45,7 +45,8 @@ export class SingletonPostgresDB {
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        entities: [TypeORMArea, TypeORMArea, TypeORMCiudad, TypeORMDepartamento, TypeORMEmpleado, TypeORMFacultad, TypeORMPais, TypeORMPrograma, TypeORMSede, TypeORMTipoContratacion, TypeORMTipoEmpleado],
+        entities: [TypeORMPrograma, TypeORMArea, TypeORMCiudad, TypeORMDepartamento, TypeORMEmpleado, TypeORMFacultad, TypeORMPais, TypeORMSede, TypeORMTipoContratacion, TypeORMTipoEmpleado],
+        logging: true,
         synchronize: true,
     }
 
@@ -66,11 +67,9 @@ export class SingletonMongoDB {
     private static options: DataSourceOptions = {
         type: "mongodb",
         url: process.env.MONGO_URI || "mongodb://localhost:27017",
-        useNewUrlParser: true, // Opciones específicas para MongoDB
-        useUnifiedTopology: true,
-        synchronize: true,
         entities: [TypeORMCity, TypeORMComment, TypeORMEvent, TypeORMLocation, TypeORMUser],
         logging: true,
+        synchronize: true,
     }
 
     private constructor() {}

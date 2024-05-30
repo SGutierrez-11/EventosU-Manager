@@ -2,7 +2,7 @@ import Sede from "@/api/domain/entities/Sede";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import TypeORMCiudad from "./Ciudad";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMSede implements Sede {
 
     @PrimaryGeneratedColumn("increment")

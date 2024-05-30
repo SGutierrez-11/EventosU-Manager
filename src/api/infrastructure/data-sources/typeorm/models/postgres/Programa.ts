@@ -1,7 +1,7 @@
 import Programa from "@/api/domain/entities/Programa";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMPrograma implements Programa {
 
     @PrimaryGeneratedColumn("increment")

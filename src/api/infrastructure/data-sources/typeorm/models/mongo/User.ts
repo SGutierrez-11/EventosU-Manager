@@ -1,11 +1,12 @@
 import { User, UserRelation } from "@/api/domain/entities/User";
 import { Column, Entity, ObjectIdColumn } from "typeorm";
 import TypeORMCity from "./City";
+import { ObjectId } from "mongodb";
 
 @Entity()
-export default class TypeORMUser implements User {
+export default class TypeORMUser {
     @ObjectIdColumn()
-    id!: string;
+    id!: ObjectId;
 
     @Column()
     username!: string;

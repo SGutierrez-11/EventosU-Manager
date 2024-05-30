@@ -1,4 +1,5 @@
 // components/EventsCards.tsx
+'use client'; 
 import React from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
@@ -11,10 +12,11 @@ type EventsCardsProps = {
 
 
 const EventsCards = ({ events }: EventsCardsProps) => {
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {events.length != 0 ? events.map((event) => (
-        <div key={event.id} className="col-span-1">
+      {events.length != 0 ? events.map((event, key) => (
+        <div key={key} className="col-span-1">
           <Link
             href={`/events/${encodeURIComponent(event.id.toString())}`}
             passHref
@@ -33,9 +35,9 @@ const EventsCards = ({ events }: EventsCardsProps) => {
                   alt={`Imagen del evento ${event.title}`}
                 />
               </div>
-              <div className="flex flex-col justify-between flex-grow">
+              <div className="flex flex-col justify-between flex-grow w-full">
                 <CardHeader>
-                  <div className="flex flex-row gap-4 justify-between w-full px-4">
+                  <div className="flex flex-row gap-4 justify-between w-full px-4 items-center">
                     <p className="text-lg font-bold text-primary-500">
                       {event.title}
                     </p>
@@ -45,13 +47,18 @@ const EventsCards = ({ events }: EventsCardsProps) => {
                 <CardBody>
                   <div className="px-4 pb-4 flex-grow">
                     <p className="text-base text-gray-700">
-                      {event.description}
+                    Description: {event.description}
+                    </p>
+                  </div>
+                  <div className="px-4 pb-4 flex-grow">
+                    <p className="text-base text-gray-700">
+                     Categories: {event.categories.join(', ')}
                     </p>
                   </div>
                 </CardBody>
                 <CardFooter>
-                  <div className="flex justify-end w-full px-4">
-                    <p className="text-sm text-success-500">{String(event.location)}</p>
+                  <div className="flex justify-end w-full">
+                    <p className="text-sm text-success-500">{String(event.location.name || 'Sin ubicación')}</p>
                   </div>
                 </CardFooter>
               </div>

@@ -132,6 +132,7 @@ const EventForm: React.FC = () => {
         organizingProgram: "",
         comments: [],
       }); // Reiniciar el formulario
+      
     } catch (error) {
       console.error('Failed to submit the event:', error);
     }
@@ -166,7 +167,7 @@ const EventForm: React.FC = () => {
         onChange={handleChange}
       />
       <Select label="Ubicación" onChange={e => handleLocationChange(e.target.value)}>
-        {locations.map(loc => (
+        {locations?.map(loc => (
           <SelectItem key={loc.name} value={loc.name}>
             {loc.name} - {loc.address}, {loc.city.name}
           </SelectItem>

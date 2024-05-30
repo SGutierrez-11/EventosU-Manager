@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typ
 import TypeORMFacultad from "./Facultad";
 import TypeORMEmpleado from "./Empleado";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMArea implements Area {
     @PrimaryGeneratedColumn("increment")
     codigo!: number;

@@ -2,7 +2,7 @@ import Facultad from "@/api/domain/entities/Facultad";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import TypeORMEmpleado from "./Empleado";
 
-@Entity()
+@Entity({ schema: "eventos" })
 export default class TypeORMFacultad implements Facultad {
 
     @PrimaryGeneratedColumn("increment")

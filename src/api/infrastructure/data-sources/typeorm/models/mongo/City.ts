@@ -1,11 +1,12 @@
 import { City } from "@/api/domain/entities/City";
+import { ObjectId } from "mongodb";
 import { Column, Entity, ObjectIdColumn } from "typeorm";
 
 
 @Entity()
-export default class TypeORMCity implements City {
+export default class TypeORMCity{
     @ObjectIdColumn()
-    id!: string;
+    id!: ObjectId;
 
     @Column()
     name!: string;

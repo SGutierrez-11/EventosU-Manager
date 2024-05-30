@@ -28,7 +28,7 @@ docker-compose up -d
 
 ```bash
 chmod +x ./commands/sync.sh
-./commands/sync.sh
+./sync.sh
 ```
 
 
