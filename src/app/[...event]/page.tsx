@@ -99,7 +99,7 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
           >
             <option value="">Seleccione un usuario</option>
             {event.attendees.map((attendee) => (
-              <option key={attendee.id} value={attendee.id}>
+              <option key={attendee.id.toString()} value={attendee.id.toString()}>
                 {attendee.fullName}
               </option>
             ))}
