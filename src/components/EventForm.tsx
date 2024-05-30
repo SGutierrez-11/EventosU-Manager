@@ -6,6 +6,7 @@ import { Location } from "@/api/domain/entities/Location";
 import Facultad from "@/api/domain/entities/Facultad";
 import { User } from "@/api/domain/entities/User";
 import Programa from "@/api/domain/entities/Programa";
+import { City } from "@/api/domain/entities/City";
 
 const url = "http://localhost:3000/api";
 
@@ -22,7 +23,7 @@ const EventForm: React.FC = () => {
     organizingProgram: "",
     comments: [],
   });
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [locations, setLocations] = useState<City[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [facultades, setFacultades] = useState<Facultad[]>([]);
   const [programa, setPrograma] = useState<Programa[]>([]);
@@ -30,9 +31,9 @@ const EventForm: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resLocations = await fetch(`${url}/location`);
+        const resLocations = await fetch(`${url}/city`);
         const dataLocations = await resLocations.json();
-        setLocations(dataLocations.Locations);
+        setLocations(dataLocations.City);
         console.log("Locations: ", dataLocations);
   
         const resFacultades = await fetch(`${url}/facultad`);
@@ -61,14 +62,19 @@ const EventForm: React.FC = () => {
 
   const handleCheckboxChange = (name: string, values: string[] | User[]) => {
     console.log('Checkbox Select:', name, values);
-    setEvent(prev => ({ ...prev, [name]: values }));
-    const valueIds = values.map(user => (typeof user === 'string' ? user : user.id));
+    //clean undesired values from values array
+    const newValues = values.filter(value => value !== undefined);
+    //setEvent(prev => ({ ...prev, [name]: values }));
     if (name === "attendees") {
-      const filteredSpeakers = event.speakers.filter(speaker => !valueIds.includes(speaker.id));
-      setEvent(prev => ({ ...prev, speakers: filteredSpeakers }));
+      const filteredSpeakers = users.filter(speaker => newValues.includes(speaker.id));
+      setEvent(prev => ({ ...prev, attendees: filteredSpeakers }));
     } else if (name === "speakers") {
-      const filteredAttendees = event.attendees.filter(attendee => !valueIds.includes(attendee.id));
-      setEvent(prev => ({ ...prev, attendees: filteredAttendees }));
+      const filteredAttendees = users.filter(attendee =>  newValues.includes(attendee.id));
+      setEvent(prev => ({ ...prev, speakers: filteredAttendees }));
+    } else if (name === "organizingFaculties") {
+      const filteredFaculties = facultades.filter(faculty => newValues.includes(faculty.nombre));
+      const facultiesNames = filteredFaculties.map(faculty => faculty.nombre);
+      setEvent(prev => ({ ...prev, organizingFaculties: facultiesNames }));
     }
   };
 
@@ -84,9 +90,10 @@ const EventForm: React.FC = () => {
   };
 
   const handleLocationChange = (value: string) => {
+    console.log('Location Select:', value);
     // Encuentra la ubicación seleccionada basada en el valor
     const location = locations.find(loc => loc.name === value);
-    setEvent(prev => ({ ...prev, location: location! }));
+    setEvent(prev => ({ ...prev, location: {name: '', address: '',city:location!} }));
   };
 
   const handleProgramaChange = (value: string) => {
@@ -132,7 +139,7 @@ const EventForm: React.FC = () => {
         organizingProgram: "",
         comments: [],
       }); // Reiniciar el formulario
-      
+
     } catch (error) {
       console.error('Failed to submit the event:', error);
     }
@@ -169,7 +176,7 @@ const EventForm: React.FC = () => {
       <Select label="Ubicación" onChange={e => handleLocationChange(e.target.value)}>
         {locations?.map(loc => (
           <SelectItem key={loc.name} value={loc.name}>
-            {loc.name} - {loc.address}, {loc.city.name}
+            {loc.name}
           </SelectItem>
         ))}
       </Select>
@@ -194,10 +201,10 @@ const EventForm: React.FC = () => {
         ))}
       </Select>
       <CheckboxGroup label="Oradores" orientation="horizontal" color="primary" value={event.speakers.map(user => user.id)} onChange={(values) => handleCheckboxChange('speakers', values)}>
-        {users.map(user => <Checkbox key={user.id} value={user.id}>{user.fullName}</Checkbox>)}
+        {users.map(user => <Checkbox key={user.id} value={user.id}>{user.username}</Checkbox>)}
       </CheckboxGroup>
       <CheckboxGroup label="Asistentes" orientation="horizontal" color="primary" value={event.attendees.map(user => user.id)} onChange={(values) => handleCheckboxChange('attendees', values)}>
-        {users.map(user => <Checkbox key={user.id} value={user.id}>{user.fullName}</Checkbox>)}
+        {users.map(user => <Checkbox key={user.id} value={user.id}>{user.username}</Checkbox>)}
       </CheckboxGroup>
       <Button type="submit" color="primary">
         Agregar

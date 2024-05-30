@@ -9,11 +9,11 @@ docker exec -i local_pgdb psql -U admin -d eventos -c "\copy (
         e.email, 
         te.nombre as relationshipType 
     FROM 
-        eventos.empleados e 
+        eventos.TYPE_ORM_empleado e 
     INNER JOIN 
-        eventos.tipos_empleado te 
+        eventos.TYPE_ORM_tipo_empleado te 
     ON 
-        e.tipo_empleado = te.nombre
+        e.\"tipoEmpleadoNombre\" = te.nombre
 ) TO '/tmp/empleados.csv' WITH CSV HEADER;"
 
 docker cp local_pgdb:/tmp/empleados.csv ./empleados.csv
@@ -24,15 +24,15 @@ docker exec -i local_pgdb psql -U admin -d eventos -c "\copy (
         d.nombre as department, 
         p.nombre as country
     FROM 
-        eventos.ciudades c 
+        eventos.TYPE_ORM_ciudad c 
     INNER JOIN 
-        eventos.departamentos d 
+        eventos.TYPE_ORM_DEPARTAMENTO d 
     ON 
-        c.cod_dpto = d.codigo
+        c.\"codDptoCodigo\" = d.codigo
     INNER JOIN 
-        eventos.paises p 
+        eventos.TYPE_ORM_PAIS p 
     ON 
-        d.cod_pais = p.codigo
+        d.\"codPaisCodigo\" = p.codigo
 ) TO 'tmp/ciudades.csv' WITH CSV HEADER;"
 
 docker cp local_pgdb:/tmp/ciudades.csv ./ciudades.csv
@@ -49,8 +49,8 @@ docker cp ./ciudades.csv eventos-u-manager-mongo-1:/ciudades.csv
 
 # Importar datos desde archivos CSV a MongoDB
 echo "Importando datos desde archivos CSV a MongoDB..."
-docker exec -i eventos-u-manager-mongo-1 mongoimport -u admin -p admin --authenticationDatabase admin --db eventos --collection users --type csv --file ./empleados.csv --headerline 
-docker exec -i eventos-u-manager-mongo-1 mongoimport -u admin -p admin --authenticationDatabase admin --db eventos --collection cities --type csv --file ./ciudades.csv --headerline
+docker exec -i eventos-u-manager-mongo-1 mongoimport -u admin -p admin --authenticationDatabase admin --db eventos --collection type_orm_user --type csv --file ./empleados.csv --headerline 
+docker exec -i eventos-u-manager-mongo-1 mongoimport -u admin -p admin --authenticationDatabase admin --db eventos --collection type_orm_city --type csv --file ./ciudades.csv --headerline
 
 # Eliminar archivos temporales
 #rm ./*.csv

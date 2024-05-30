@@ -1,5 +1,6 @@
 "use client";
 import TypeORMEvent from "@/api/infrastructure/data-sources/typeorm/models/mongo/Event";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const url = "http://localhost:3000/api";
@@ -18,7 +19,6 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
     }
     fetchData()
   }, []);
-
   const handleAddComment = async () => {
     const updatedEvent = {
       ...event,
@@ -64,14 +64,11 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
         <p className="font-semibold mb-2">Fecha: {event.date}</p>
         <p className="font-semibold mb-2">
           Ubicación:{" "}
-          {event.location?.name == '' ? 'Sin ubicación' : `${event?.location?.name}, ${event?.location?.address}, ${event?.location?.city.name}, ${event?.location?.city.department}, ${event?.location?.city.country}`}
+          {event.location?.city?.name == '' ? 'Sin ubicación' : `${event?.location?.city.name}, ${event?.location?.city.department}, ${event?.location?.city.country}`}
 
         </p>
         <p className="font-semibold mb-2">
           Facultades Organizadoras: {event.organizingFaculties?.join(", ")}
-        </p>
-        <p className="font-semibold mb-4">
-          Programa Organizador: {event.organizingProgram}
         </p>
 
         <h2 className="text-3xl font-extrabold mt-6 mb-2">Oradores</h2>
@@ -101,21 +98,30 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
             className="w-full mt-2 p-2 border"
           >
             <option value="">Seleccione un usuario</option>
-            {event.attendees?.map((attendee) => (
-              <option key={attendee.id.toString()} value={attendee.id.toString()}>
-                {attendee.fullName}
+            {event.attendees?.map((attendee, key) => (
+              <option key={key} value={attendee.username}>
+                {attendee.username}
               </option>
             ))}
           </select>
-          <button
-            onClick={handleAddComment}
-            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Añadir Comentario
-          </button>
+          <div className="flex justify-between">
+            <button
+              onClick={() => {if(newComment != ''){ handleAddComment()}}}
+              className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Añadir Comentario
+            </button>
+            <Link href={`/`}>
+              <button
+                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Volver
+              </button>
+            </Link>
+          </div>
           {event.comments?.map((comment, index) => (
             <p key={index} className="mt-2">
-              {comment.text} - {comment.user.fullName}
+              {comment.text} - {comment?.user?.id as unknown as string}
             </p>
           ))}
         </div>
