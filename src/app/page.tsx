@@ -57,19 +57,12 @@ const Home: React.FC = () => {
               {(onClose) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1">
-                    Modal Title
+                    Agregar un nuevo evento
                   </ModalHeader>
-                  <ModalBody>
+                  <ModalBody className="px-8 py-4">
                     <EventForm />
                   </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                      Close
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                      Action
-                    </Button>
-                  </ModalFooter>
+                 
                 </>
               )}
             </ModalContent>

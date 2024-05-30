@@ -30,7 +30,7 @@ const EventsCards: React.FC<EventsArray> = ({ events }) => {
               </div>
               <div className="flex flex-col justify-between flex-grow">
                 <CardHeader>
-                  <div className="flex justify-between w-full px-4">
+                  <div className="flex flex-row gap-4 justify-between w-full px-4">
                     <p className="text-lg font-bold text-primary-500">
                       {event.title}
                     </p>
