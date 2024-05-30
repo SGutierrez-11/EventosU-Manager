@@ -1,6 +1,6 @@
 "use client"
 import TypeORMEvent from "@/api/infrastructure/data-sources/typeorm/models/mongo/Event";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const eventData = {
   title: "Conferencia Internacional de Tecnología",
@@ -64,10 +64,12 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     fetch(`${url}/api/event/${params.id}`).then((res) =>
       res.json().then((data) => {
+        console.log(data);
         setEvent(data.Event);
       })
     );
   }, []);
+  if(!event.title) return (<div>Loading...</div>);
   return (
     <div className="max-w-4xl m-auto bg-white shadow-lg rounded-lg">
       <div className="bg-orange-500 p-4 rounded-t-lg">
