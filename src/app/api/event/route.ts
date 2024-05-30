@@ -34,9 +34,11 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
     const eventRepository = await getEventRepository();
     const body = await request.json() as Event;
-    const event = await eventRepository.save(body);
+    const event = await eventRepository.update(id as string, body);
     return Response.json({'Event': event});
 }
 

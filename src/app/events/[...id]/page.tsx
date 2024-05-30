@@ -28,7 +28,7 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
       ],
     };
 
-    const response = await fetch(`${url}/event/${params.id}`, {
+    const response = await fetch(`${url}/event?id=${params.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -37,8 +37,8 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      setEvent(data.Event); // Actualiza el evento con la nueva lista de comentarios
+      await response.json();
+      setEvent(updatedEvent as TypeORMEvent); // Actualiza el evento con la nueva lista de comentarios
       setNewComment("");
       setCommenterId("");
     }
