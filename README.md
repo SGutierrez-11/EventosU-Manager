@@ -24,6 +24,14 @@ cd eventos-u-manager
 docker-compose up -d
 ```
 
+4. Ejecute el script de sincronización de datos:
+
+```bash
+chmod +x ./commands/sync.sh
+./commands/sync.sh
+```
+
+
 4. Acceda a la aplicación en su navegador web:
 
 ```

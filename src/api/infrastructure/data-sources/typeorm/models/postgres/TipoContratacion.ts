@@ -4,6 +4,6 @@ import { Entity, PrimaryColumn } from "typeorm";
 @Entity()
 export default class TypeORMTipoContratacion implements TipoContratacion {
 
-    @PrimaryColumn("string")
+    @PrimaryColumn("varchar")
     nombre!: string;
 }
