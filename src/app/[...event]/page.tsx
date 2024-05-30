@@ -1,4 +1,6 @@
-import React from "react";
+"use client"
+import TypeORMEvent from "@/api/infrastructure/data-sources/typeorm/models/mongo/Event";
+import React, { use, useEffect, useState } from "react";
 
 const eventData = {
   title: "Conferencia Internacional de Tecnología",
@@ -54,45 +56,56 @@ const eventData = {
   ],
 };
 
-const EventProfilePage = () => {
+
+const url = "http://localhost:3000/api";
+
+const EventProfilePage = ({ params }: { params: { id: string } }) => {
+  const [event, setEvent] = useState<TypeORMEvent>({} as TypeORMEvent);
+  useEffect(() => {
+    fetch(`${url}/api/event/${params.id}`).then((res) =>
+      res.json().then((data) => {
+        setEvent(data.Event);
+      })
+    );
+  }, []);
   return (
     <div className="max-w-4xl m-auto bg-white shadow-lg rounded-lg">
       <div className="bg-orange-500 p-4 rounded-t-lg">
-        <h1 className="text-4xl font-bold text-white text-center">{eventData.title}</h1>
+        <h1 className="text-4xl font-bold text-white text-center">{event.title}</h1>
       </div>
       <div className="p-12">
-        <p className="text-xl font-bold mb-12">{eventData.description}</p>
+        <p className="text-xl font-bold mb-12">{event.description}</p>
         <p className="font-semibold mb-2">
-          Categorías: {eventData.categories.join(", ")}
+          Categorías: {event.categories.join(", ")}
         </p>
-        <p className="font-semibold mb-2">Fecha: {eventData.date}</p>
+        <p className="font-semibold mb-2">Fecha: {event.date}</p>
         <p className="font-semibold mb-2">
           Ubicación:{" "}
-          {`${eventData.location.name}, ${eventData.location.address}, ${eventData.location.city.name}, ${eventData.location.city.department}, ${eventData.location.city.country}`}
+          {`${event.location.name}, ${event.location.address}, ${event.location.city.name}, ${event.location.city.department}, ${event.location.city.country}`}
         </p>
         <p className="font-semibold mb-2">
-          Facultades Organizadoras: {eventData.organizingFaculties.join(", ")}
+          Facultades Organizadoras: {event.organizingFaculties.join(", ")}
         </p>
         <p className="font-semibold mb-4">
-          Programa Organizador: {eventData.organizingProgram}
+          Programa Organizador: {event.organizingProgram}
         </p>
 
         <h2 className="text-3xl font-extrabold mt-6 mb-2">Oradores</h2>
-        {eventData.speakers.map((speaker) => (
+        {event.speakers.map((speaker) => (
           <p key={speaker.username} className="ml-4 mb-2">
             {speaker.fullName} - {speaker.email}
           </p>
         ))}
 
         <h2 className="text-3xl font-extrabold mt-6 mb-2">Asistentes</h2>
-        {eventData.attendees.map((attendee) => (
+        {event.attendees.map((attendee) => (
           <p key={attendee.username} className="ml-4 mb-2">
             {attendee.fullName} - {attendee.email}
           </p>
         ))}
 
         <h2 className="text-3xl font-extrabold mt-6 mb-2">Comentarios</h2>
-        {eventData.comments.map((comment) => (
+        {event.comments.map((comment) => (
           <p key={comment.text} className="ml-4 mb-2">
             {comment.text} - {comment.user.fullName}
           </p>

@@ -1,32 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Input, Button, Checkbox, CheckboxGroup } from "@nextui-org/react";
+import { Input, Button, Checkbox, CheckboxGroup, Select, SelectItem } from "@nextui-org/react";
+import { Event } from "@/api/domain/entities/Event";
+import { Location } from "@/api/domain/entities/Location";
+import Facultad from "@/api/domain/entities/Facultad";
+import { User } from "@/api/domain/entities/User";
+import Programa from "@/api/domain/entities/Programa";
 
-// Definiendo explícitamente los tipos para el estado y las opciones del select
-interface Event {
-  title: string;
-  description: string;
-  date: string;
-  location: string;
-  categories: string[];
-  attendees: string[];
-  speakers: string[];
-  organizingFaculties: string[];
-  organizingProgram: string;
-  comments: string[];
-}
-
-interface CategoryOption {
-  key: string;
-  value: string;
-}
+const url = "http://localhost:3000/api";
 
 const EventForm: React.FC = () => {
   const [event, setEvent] = useState<Event>({
     title: "",
     description: "",
     date: "",
-    location: "",
+    location: { name: "", address: "", city: { name: "", department: "", country: "" } },
     categories: [],
     attendees: [],
     speakers: [],
@@ -34,35 +22,72 @@ const EventForm: React.FC = () => {
     organizingProgram: "",
     comments: [],
   });
-
-  const [categoriesOptions, setCategoriesOptions] = useState<CategoryOption[]>([]);
-  const [facultyOptions, setFacultyOptions] = useState<CategoryOption[]>([
-    { key: "fisica", value: "Facultad de Física" },
-    { key: "quimica", value: "Facultad de Química" },
-    { key: "biologia", value: "Facultad de Biología" }
-  ]);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [facultades, setFacultades] = useState<Facultad[]>([]);
+  const [programa, setPrograma] = useState<Programa[]>([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const fetchedCategories: CategoryOption[] = [
-        { key: "arte", value: "Arte" },
-        { key: "ciencia", value: "Ciencia" },
-        { key: "deporte", value: "Deporte" }
-      ];
-      setCategoriesOptions(fetchedCategories);
-    };
-
-    fetchCategories();
+    fetch(`${url}/location`).then((res) =>
+      res.json().then((data) => {
+        setLocations(data.Locations);
+        console.log("Locations: ", data);
+      })
+    );
+    fetch(`${url}/facultad`).then((res) =>
+      res.json().then((data) => {
+        setFacultades(data.Facultades);
+        console.log("Facultades: ", data);
+      })
+    );
+    fetch(`${url}/user`).then((res) =>
+      res.json().then((data) => {
+        setUsers(data.User);
+        console.log("Users: ", data);
+      })
+    );
+    fetch(`${url}/programa`).then((res) =>
+      res.json().then((data) => {
+        setPrograma(data.Programas);
+        console.log("Programa: ", data);
+      })
+    );
   }, []);
 
-  const handleCheckboxChange = (name: string, values: string[]) => {
+  const handleCheckboxChange = (name: string, values: string[] | User[]) => {
     setEvent(prev => ({ ...prev, [name]: values }));
+    const valueIds = values.map(user => (typeof user === 'string' ? user : user.id));
+    if (name === "attendees") {
+      const filteredSpeakers = event.speakers.filter(speaker => !valueIds.includes(speaker.id));
+      setEvent(prev => ({ ...prev, speakers: filteredSpeakers }));
+    } else if (name === "speakers") {
+      const filteredAttendees = event.attendees.filter(attendee => !valueIds.includes(attendee.id));
+      setEvent(prev => ({ ...prev, attendees: filteredAttendees }));
+    }
   };
 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEvent({ ...event, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "categories") {
+      const categoriesArray = value.split(',').map(item => item.trim());
+      setEvent(prev => ({ ...prev, categories: categoriesArray }));
+    } else {
+      setEvent(prev => ({ ...prev, [name]: value }));
+    }
   };
+
+  const handleLocationChange = (value: string) => {
+    // Encuentra la ubicación seleccionada basada en el valor
+    const location = locations.find(loc => loc.name === value);
+    setEvent(prev => ({ ...prev, location: location! }));
+  };
+
+  const handleProgramaChange = (value: string) => {
+    // Encuentra el programa seleccionado basado en el valor
+    const program = programa.find(pro => pro.nombre === value);
+    setEvent(prev => ({ ...prev, organizingProgram: program?.nombre }));
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,19 +108,12 @@ const EventForm: React.FC = () => {
         value={event.description}
         onChange={handleChange}
       />
-      <CheckboxGroup
-        label="Selecciona las categorías:"
-        orientation="horizontal"
-        color="primary"
-        value={event.categories}
-        onChange={(values) => handleCheckboxChange('categories', values)}
-      >
-        {categoriesOptions.map((option) => (
-          <Checkbox key={option.key} value={option.key}>
-            {option.value}
-          </Checkbox>
-        ))}
-      </CheckboxGroup>
+      <Input
+        label="Categorías (separadas por comas)"
+        name="categories"
+        value={event.categories.join(', ')} 
+        onChange={handleChange}
+      />
       <Input
         label="Fecha"
         name="date"
@@ -103,12 +121,13 @@ const EventForm: React.FC = () => {
         value={event.date}
         onChange={handleChange}
       />
-      <Input
-        label="Ubicación"
-        name="location"
-        value={event.location}
-        onChange={handleChange}
-      />
+      <Select label="Ubicación" onChange={e => handleLocationChange(e.target.value)}>
+        {locations.map(loc => (
+          <SelectItem key={loc.name} value={loc.name}>
+            {loc.name} - {loc.address}, {loc.city.name}
+          </SelectItem>
+        ))}
+      </Select>
       <CheckboxGroup
         label="Selecciona las facultades organizadoras:"
         orientation="horizontal"
@@ -116,18 +135,25 @@ const EventForm: React.FC = () => {
         value={event.organizingFaculties}
         onChange={(values) => handleCheckboxChange('organizingFaculties', values)}
       >
-        {facultyOptions.map((option) => (
-          <Checkbox key={option.key} value={option.key}>
-            {option.value}
+        {facultades.map((option) => (
+          <Checkbox key={option.nombre} value={option.nombre}>
+            {option.nombre}
           </Checkbox>
         ))}
       </CheckboxGroup>
-      <Input
-        label="Programa organizador"
-        name="organizingProgram"
-        value={event.organizingProgram}
-        onChange={handleChange}
-      />
+      <Select label="Programa" onChange={e => handleProgramaChange(e.target.value)}>
+        {programa.map(pro => (
+          <SelectItem key={pro.codigo} value={pro.nombre}>
+            {pro.nombre}
+          </SelectItem>
+        ))}
+      </Select>
+      <CheckboxGroup label="Oradores" orientation="horizontal" color="primary" value={event.speakers.map(user => user.id)} onChange={(values) => handleCheckboxChange('speakers', values)}>
+        {users.map(user => <Checkbox key={user.id} value={user.id}>{user.fullName}</Checkbox>)}
+      </CheckboxGroup>
+      <CheckboxGroup label="Asistentes" orientation="horizontal" color="primary" value={event.attendees.map(user => user.id)} onChange={(values) => handleCheckboxChange('attendees', values)}>
+        {users.map(user => <Checkbox key={user.id} value={user.id}>{user.fullName}</Checkbox>)}
+      </CheckboxGroup>
       <Button type="submit" color="primary">
         Agregar
       </Button>

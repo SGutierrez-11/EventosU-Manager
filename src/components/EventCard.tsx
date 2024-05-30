@@ -3,12 +3,17 @@ import React from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import Image from "next/image";
-import { EventsArray } from "../types"; 
+import TypeORMEvent from "@/api/infrastructure/data-sources/typeorm/models/mongo/Event";
 
-const EventsCards: React.FC<EventsArray> = ({ events }) => {
+type EventsCardsProps = {
+  events: TypeORMEvent[];
+};
+
+
+const EventsCards = ({ events }: EventsCardsProps) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {events.map((event) => (
+      {events.length != 0 ? events.map((event) => (
         <div key={event.id} className="col-span-1">
           <Link
             href={`/events/${encodeURIComponent(event.id.toString())}`}
@@ -21,7 +26,7 @@ const EventsCards: React.FC<EventsArray> = ({ events }) => {
             >
               <div className="relative w-full h-48">
                 <Image
-                  src={event.imageUrl}
+                  src={"/event.png"}
                   className="w-full h-full"
                   layout="fill"
                   objectFit="cover"
@@ -46,14 +51,14 @@ const EventsCards: React.FC<EventsArray> = ({ events }) => {
                 </CardBody>
                 <CardFooter>
                   <div className="flex justify-end w-full px-4">
-                    <p className="text-sm text-success-500">{event.location}</p>
+                    <p className="text-sm text-success-500">{String(event.location)}</p>
                   </div>
                 </CardFooter>
               </div>
             </Card>
           </Link>
         </div>
-      ))}
+      )) : <p>No hay eventos disponibles</p>}
     </div>
   );
 };
