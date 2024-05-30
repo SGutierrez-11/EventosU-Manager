@@ -11,8 +11,8 @@ async function getLocationRepository() {
 
 export async function GET() {
     const locationRepository = await getLocationRepository();
-    const location = await locationRepository.find();
-    return Response.json({'Location': location});
+    const locations = await locationRepository.find();
+    return Response.json({'Locations': locations});
 }
 
 export async function POST(request: Request) {
