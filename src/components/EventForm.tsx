@@ -89,10 +89,48 @@ const EventForm: React.FC = () => {
     setEvent(prev => ({ ...prev, organizingProgram: program?.nombre }));
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    console.log(event);
+  
+    // Validación de datos del evento antes de enviar
+    if (!event.title || !event.description || !event.date || !event.location || event.categories.length === 0) {
+      alert("Por favor, completa todos los campos requeridos.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${url}/event`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(event)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Something went wrong with the POST request.');
+      }
+  
+      const result = await response.json();
+      console.log('Event added successfully:', result);
+      // Opcional: Redirigir al usuario o limpiar el formulario aquí
+      setEvent({
+        title: "",
+        description: "",
+        date: "",
+        location: { name: "", address: "", city: { name: "", department: "", country: "" } },
+        categories: [],
+        attendees: [],
+        speakers: [],
+        organizingFaculties: [],
+        organizingProgram: "",
+        comments: [],
+      }); // Reiniciar el formulario
+    } catch (error) {
+      console.error('Failed to submit the event:', error);
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
