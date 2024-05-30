@@ -1,6 +1,7 @@
 import { Event } from "@/api/domain/entities/Event";
 import { SingletonMongoDB } from "@/api/infrastructure/data-sources/typeorm";
 import TypeORMEvent from "@/api/infrastructure/data-sources/typeorm/models/mongo/Event";
+import { ObjectId } from "mongodb";
 
 const mongoDB = SingletonMongoDB.getInstance();
 
@@ -14,7 +15,9 @@ export async function GET(request: Request) {
     const id = searchParams.get('id');
     if (id) {
         const eventRepository = await getEventRepository();
-        const event = await eventRepository.findOne({ where: { id } });
+        const objectId = new ObjectId(id);
+        const events = await eventRepository.find();
+        const event = events.find((event: any) => { console.log(event);return event.id.equals(objectId)});
         return Response.json({'Event': event});
     } else {
         const eventRepository = await getEventRepository();

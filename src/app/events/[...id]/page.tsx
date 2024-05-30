@@ -10,12 +10,13 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
   const [commenterId, setCommenterId] = useState("");
 
   useEffect(() => {
-    fetch(`${url}/api/event/${params.id}`).then((res) =>
-      res.json().then((data) => {
-        console.log(data);
-        setEvent(data.Event);
-      })
-    );
+    const fetchData = async () => {
+      const res = await fetch(`${url}/event?id=${params.id}`)
+      const data = await res.json()
+      console.log(data)
+      setEvent(data.Event)
+    }
+    fetchData()
   }, []);
 
   const handleAddComment = async () => {
@@ -52,35 +53,36 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="p-12">
         <p className="text-xl font-bold mb-12">{event.description}</p>
-        <p className="font-semibold mb-2">
+        <span className="font-semibold mb-2">
           Categorías:{" "}
           {event.categories == undefined ? (
             <p>No hay categorias</p>
           ) : (
             event.categories.join(", ")
           )}
-        </p>
+        </span>
         <p className="font-semibold mb-2">Fecha: {event.date}</p>
         <p className="font-semibold mb-2">
           Ubicación:{" "}
-          {`${event.location.name}, ${event.location.address}, ${event.location.city.name}, ${event.location.city.department}, ${event.location.city.country}`}
+          {event.location?.name == '' ? 'Sin ubicación' : `${event?.location?.name}, ${event?.location?.address}, ${event?.location?.city.name}, ${event?.location?.city.department}, ${event?.location?.city.country}`}
+
         </p>
         <p className="font-semibold mb-2">
-          Facultades Organizadoras: {event.organizingFaculties.join(", ")}
+          Facultades Organizadoras: {event.organizingFaculties?.join(", ")}
         </p>
         <p className="font-semibold mb-4">
           Programa Organizador: {event.organizingProgram}
         </p>
 
         <h2 className="text-3xl font-extrabold mt-6 mb-2">Oradores</h2>
-        {event.speakers.map((speaker) => (
-          <p key={speaker.username} className="ml-4 mb-2">
-            {speaker.fullName} - {speaker.email}
+        {event.speakers?.map((speaker) => (
+          <p key={speaker?.username} className="ml-4 mb-2">
+            {speaker?.fullName} - {speaker?.email}
           </p>
         ))}
 
         <h2 className="text-3xl font-extrabold mt-6 mb-2">Asistentes</h2>
-        {event.attendees.map((attendee) => (
+        {event.attendees?.map((attendee) => (
           <p key={attendee.username} className="ml-4 mb-2">
             {attendee.fullName} - {attendee.email}
           </p>
@@ -99,7 +101,7 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
             className="w-full mt-2 p-2 border"
           >
             <option value="">Seleccione un usuario</option>
-            {event.attendees.map((attendee) => (
+            {event.attendees?.map((attendee) => (
               <option key={attendee.id.toString()} value={attendee.id.toString()}>
                 {attendee.fullName}
               </option>
@@ -111,7 +113,7 @@ const EventProfilePage = ({ params }: { params: { id: string } }) => {
           >
             Añadir Comentario
           </button>
-          {event.comments.map((comment, index) => (
+          {event.comments?.map((comment, index) => (
             <p key={index} className="mt-2">
               {comment.text} - {comment.user.fullName}
             </p>

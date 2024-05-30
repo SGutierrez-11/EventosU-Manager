@@ -11,6 +11,7 @@ async function getEventRepository() {
 
 export default async function handler(req: { method: string; query: { id: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { message?: string; Event?: TypeORMEvent; error?: any; }): void; new(): any; }; end: { (arg0: string): void; new(): any; }; }; setHeader: (arg0: string, arg1: string[]) => void; }) {
     if (req.method === 'GET') {
+        console.log('GET /api/eventos/[id]');
         try {
             const { id } = req.query; // Next.js usa `query` para obtener los parámetros de ruta
             const eventRepository = await getEventRepository();
