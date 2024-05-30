@@ -9,6 +9,11 @@ import TypeORMPais from "./models/postgres/Pais"
 import TypeORMPrograma from "./models/postgres/Programa"
 import TypeORMTipoContratacion from "./models/postgres/TipoContratacion"
 import TypeORMTipoEmpleado from "./models/postgres/TipoEmpleado"
+import TypeORMCity from "./models/mongo/City"
+import TypeORMComment from "./models/mongo/Comment"
+import TypeORMEvent from "./models/mongo/Event"
+import TypeORMLocation from "./models/mongo/Location"
+import TypeORMUser from "./models/mongo/User"
 
 export class TypeORMDataSource {
     protected dataSource: DataSource
@@ -61,7 +66,11 @@ export class SingletonMongoDB {
     private static options: DataSourceOptions = {
         type: "mongodb",
         url: process.env.MONGO_URI || "mongodb://localhost:27017",
+        useNewUrlParser: true, // Opciones específicas para MongoDB
+        useUnifiedTopology: true,
         synchronize: true,
+        entities: [TypeORMCity, TypeORMComment, TypeORMEvent, TypeORMLocation, TypeORMUser],
+        logging: true,
     }
 
     private constructor() {}
