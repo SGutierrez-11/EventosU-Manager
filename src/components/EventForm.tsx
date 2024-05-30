@@ -131,6 +131,7 @@ const EventForm: React.FC = () => {
         organizingProgram: "",
         comments: [],
       }); // Reiniciar el formulario
+      
     } catch (error) {
       console.error('Failed to submit the event:', error);
     }
